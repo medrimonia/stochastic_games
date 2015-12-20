@@ -1,0 +1,3 @@
+set (SOURCES
+  ZSGame.cpp
+)
