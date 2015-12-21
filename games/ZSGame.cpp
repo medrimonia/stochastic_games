@@ -9,9 +9,9 @@ namespace stoch {
   {
     rows = payoff.cols() + 1;
     cols = payoff.rows() + 1;
-    lp = lpx_create_prob();
-    lpx_set_prob_name(lp, "tmp");
-    lpx_set_obj_dir(lp, LPX_MAX);
+    lp = glp_create_prob();
+    glp_set_prob_name(lp, "tmp");
+    glp_set_obj_dir(lp, GLP_MAX);
     // LINES
     glp_add_rows(lp, payoff.cols() + 1);
     // v is the min over j of sum p_i a_{i,j} 
@@ -39,9 +39,9 @@ namespace stoch {
     glp_set_row_bnds(lp, cols, GLP_FR, 0.0, 0.0);
     glp_set_obj_coef(lp, cols, 1.0);
     // ARRAYS
-    int ia[] = new int[rows * cols + 1];
-    int ja[] = new int[rows * cols + 1];
-    double ar[] = new double[rows * cols + 1];
+    int * ia = new int[rows * cols + 1];
+    int * ja = new int[rows * cols + 1];
+    double * ar = new double[rows * cols + 1];
     for (int row = 0; row < rows; row++) {
       for (int col = 0; col < cols; col++) {
         int idx = row * cols + col + 1;
@@ -69,19 +69,25 @@ namespace stoch {
     }
     // load arrays
     glp_load_matrix(lp, rows * cols, ia, ja, ar);
+    delete(ia);
+    delete(ja);
+    delete(ar);
   }
 
   ZSGame::~ZSGame()
   {
     if (lp != NULL) {
-      lpx_delete_prob(lp);
+      glp_delete_prob(lp);
       lp = NULL;
     }
   }
 
   void ZSGame::solve()
   {
-    glp_simplex(lp, NULL);
+    int n = glp_simplex(lp, NULL);
+    if (n != 0) {
+      std::cout << "Non-zero result to glp_simplex" << std::endl;
+    }
     Eigen::VectorXd solution(cols - 1);
     double result;
     result = glp_get_obj_val(lp);

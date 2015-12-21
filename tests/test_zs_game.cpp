@@ -1,5 +1,7 @@
 #include "games/ZSGame.hpp"
 
+using stoch::ZSGame;
+
 int main()
 {
   Eigen::MatrixXd payoff(2,2);
