@@ -3,6 +3,8 @@
 #include <glpk.h>
 #include <Eigen/Core>
 
+#include <vector>
+
 namespace stoch {
 
   class ZSGame {
@@ -10,6 +12,8 @@ namespace stoch {
     glp_prob * lp;
     int rows;
     int cols;
+
+    std::vector<std::string> colNames, rowNames;
 
   public:
     ZSGame(const Eigen::MatrixXd & payoff);

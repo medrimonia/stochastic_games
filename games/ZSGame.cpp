@@ -13,30 +13,32 @@ namespace stoch {
     glp_set_prob_name(lp, "tmp");
     glp_set_obj_dir(lp, GLP_MAX);
     // LINES
-    glp_add_rows(lp, payoff.cols() + 1);
+    glp_add_rows(lp, rows);
     // v is the min over j of sum p_i a_{i,j} 
     // Declare lines: q_j = sum p_i a_{i,j} - v >= 0
     for (int row = 1; row <= payoff.cols(); row++) {
       std::ostringstream oss;
       oss << "q_" << row;
-      glp_set_row_name(lp, row, oss.str().c_str());
+      rowNames.push_back(oss.str());
+      glp_set_row_name(lp, row, rowNames[row -1].c_str());
       glp_set_row_bnds(lp, row, GLP_LO, 0.0, 0.0);
     }
     // Sum of probabilites = 1
     glp_set_row_name(lp, rows, "pSum");
     glp_set_row_bnds(lp, rows, GLP_FX, 1.0, 1.0);
     // COLUMNS
-    glp_add_cols(lp, payoff.rows() + 1);// last col is v
+    glp_add_cols(lp, cols);// last col is v
     for (int col = 1; col <= payoff.rows(); col++) {
       std::ostringstream oss;
       oss << "p_" << col;
-      glp_set_row_name(lp, col, oss.str().c_str());
-      glp_set_row_bnds(lp, col, GLP_LO, 0.0, 0.0);// all probabilites are >= 0
+      colNames.push_back(oss.str());
+      glp_set_col_name(lp, col, colNames[col -1].c_str());
+      glp_set_col_bnds(lp, col, GLP_LO, 0.0, 0.0);// all probabilites are >= 0
       glp_set_obj_coef(lp, col, 0.0);
     }
     // v column
-    glp_set_row_name(lp, cols, "v");
-    glp_set_row_bnds(lp, cols, GLP_FR, 0.0, 0.0);
+    glp_set_col_name(lp, cols, "v");
+    glp_set_col_bnds(lp, cols, GLP_FR, 0.0, 0.0);
     glp_set_obj_coef(lp, cols, 1.0);
     // ARRAYS
     int * ia = new int[rows * cols + 1];
