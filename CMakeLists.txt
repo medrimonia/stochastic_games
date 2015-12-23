@@ -52,6 +52,9 @@ if (TESTS)
     add_executable (test_zs_game tests/test_zs_game.cpp)
     target_link_libraries (test_zs_game ${EXTRA_LIBS})
 
+    add_executable (test_li_game tests/test_li_game.cpp)
+    target_link_libraries (test_li_game ${EXTRA_LIBS})
+
     add_executable (test_glpk tests/test_glpk.cpp)
     target_link_libraries (test_glpk ${EXTRA_LIBS})
 

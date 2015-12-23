@@ -61,7 +61,7 @@ namespace stoch {
         // other lines: q_j = sum p_i a_{i,j} - v
         else {
           if (col != cols -1) {
-            ar[idx] = payoff(row,col);
+            ar[idx] = payoff(col,row);
           }
           else {
             ar[idx] = -1;
