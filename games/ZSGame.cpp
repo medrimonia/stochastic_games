@@ -84,7 +84,7 @@ namespace stoch {
     }
   }
 
-  void ZSGame::solve()
+  double ZSGame::solve()
   {
     int n = glp_simplex(lp, NULL);
     if (n != 0) {
@@ -98,6 +98,7 @@ namespace stoch {
     }
     std::cout << "Value of the game: " << result << std::endl;
     std::cout << "Strategy: " << solution.transpose() << std::endl;
+    return result;
   }
 
 }

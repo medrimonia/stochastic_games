@@ -24,7 +24,17 @@ namespace stoch {
 
     void updateBelief(const Eigen::VectorXd & newBelief);
 
-    void solve();
+    int p1NbActions() const;
+
+    double solve();
+
+    /**
+     * - One result by distribution
+     * - For each result:
+     *   - [0]: game value for the distribution
+     *   - [1:k]: p_k
+     */
+    std::vector<Eigen::VectorXd> discretizedSolver(double discretizeStep);
   };
 
 }

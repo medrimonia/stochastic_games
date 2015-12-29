@@ -19,7 +19,7 @@ namespace stoch {
     ZSGame(const Eigen::MatrixXd & payoff);
     ~ZSGame();
 
-    void solve();
-
+    //TODO solve should return void and access to value / policies should be provided
+    double solve();
   };
 }
