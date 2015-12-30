@@ -83,15 +83,15 @@ namespace stoch {
     auto oldDistrib = probabilities;
     // Computing results
     std::vector<Eigen::VectorXd> result, distributions;
-    int nbActions = p1NbActions();
+    int nbGames = payoffs.size();
     // Possible arrangements by recursion
-    distributions = getBins(nbActions, discretizeStep, 1.0);
+    distributions = getBins(nbGames, discretizeStep, 1.0);
     //TODO: solve games
     for (const auto & d : distributions) {
       updateBelief(d);
-      Eigen::VectorXd entry = Eigen::VectorXd::Zero(nbActions + 1);
+      Eigen::VectorXd entry = Eigen::VectorXd::Zero(nbGames + 1);
       entry(0) = solve();
-      entry.segment(1, nbActions) = d;
+      entry.segment(1, nbGames) = d;
       result.push_back(entry);
     }
     // Restore old distrib
