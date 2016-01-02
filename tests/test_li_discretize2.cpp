@@ -28,12 +28,13 @@ int main()
   b(0,2) = -4;
   b(1,2) =  0;
 
-  Eigen::Vector3d distrib;
+  //  Eigen::Vector3d distrib;
+  Eigen::Vector2d distrib;
   distrib(0) = 1.0 / 3;
   distrib(1) = 1.0 / 3;
-  distrib(2) = 1.0 / 3;
+  //distrib(2) = 1.0 / 3;
 
-  std::vector<Eigen::MatrixXd> payoffs = {a,b,c};
+  std::vector<Eigen::MatrixXd> payoffs = {a,b/*,c*/};
 
   LIGame g(payoffs, distrib);
   auto entries = g.discretizedSolver(0.001);

@@ -11,8 +11,15 @@ set(CMAKE_CXX_FLAGS
 
 set(CMAKE_CXX_FLAGS "-Wall -Wextra ${CMAKE_CXX_FLAGS}")
 
-find_package(PkgConfig)
-pkg_search_module(EIGEN REQUIRED eigen3)
+if(APPLE)
+	set(EIGEN_INCLUDE_DIRS "/usr/local/include/eigen3" CACHE STRING "Path to eigen3 include dir")
+	#for glpk#
+	include_directories("/opt/local/include")
+	link_directories("/opt/local/lib")
+else(APPLE)
+	find_package(PkgConfig)
+	pkg_search_module(EIGEN REQUIRED eigen3)
+endif(APPLE)
 
 set (DIRECTORIES 
     games
@@ -57,6 +64,9 @@ if (TESTS)
 
     add_executable (test_li_discretize tests/test_li_discretize.cpp)
     target_link_libraries (test_li_discretize ${EXTRA_LIBS})
+
+    add_executable (test_li_discretize2 tests/test_li_discretize2.cpp)
+    target_link_libraries (test_li_discretize2 ${EXTRA_LIBS})
 
     add_executable (test_glpk tests/test_glpk.cpp)
     target_link_libraries (test_glpk ${EXTRA_LIBS})
